@@ -1,5 +1,3 @@
-d:
-
-cd LeetCode_Record
+%cd%
 
 call jupyter-lab
