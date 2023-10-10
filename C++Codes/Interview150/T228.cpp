@@ -16,11 +16,9 @@ public:
         };
 
         while (right < n) {
-            if (right == n - 1) appendToAns();
-            if (right + 1 < n) {
-                if (long(nums[right + 1]) - long(nums[right]) != 1)
-                    appendToAns();
-            }
+            if ((right == n - 1) || (right + 1 < n) && 
+                (long(nums[right + 1]) - long(nums[right]) != 1))
+                appendToAns();
             right++;
         }
 
