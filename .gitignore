@@ -169,3 +169,6 @@ build/
 
 # cpp
 test.cpp
+
+# .class 文件
+*.class
