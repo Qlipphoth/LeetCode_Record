@@ -2,6 +2,7 @@ using namespace std;
 
 #include <iterator>
 #include <vector>
+#include <deque>
 #include <unordered_map>
 #include <unordered_set>
 #include <set>
