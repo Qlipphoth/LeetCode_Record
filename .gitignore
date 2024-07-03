@@ -172,3 +172,6 @@ test.cpp
 
 # .class 文件
 *.class
+
+# leetcode 插件
+.Icpr_data/
