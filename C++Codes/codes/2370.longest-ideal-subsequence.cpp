@@ -17,6 +17,7 @@ using namespace std;
 #include <iostream>
 #include <list>
 #include <queue>
+
 #include <stack>
 #include <tuple>
 #include <unordered_map>
@@ -30,14 +31,13 @@ public:
     int longestIdealString(string s, int k) {
         vector<int> dp(26, 0);
         for (auto& c : s) {
-            vector<int> cur(26, 0);
-            for (int i = 0; i < 26; ++i) {
-                cur[i] = max_element(
-                    dp.begin() + max(0, i - k),
-                    dp.begin() + min(25, i + k)
-                );
-            }
+            c -= 'a';
+            dp[c] = *max_element(
+                dp.begin() + max(0, c - k), 
+                dp.begin() + min(26, c + k + 1)
+            ) + 1;
         }
+        return *max_element(dp.begin(), dp.end());
     }
 };
 // @lc code=end
