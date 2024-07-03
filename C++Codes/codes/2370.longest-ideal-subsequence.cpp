@@ -28,7 +28,16 @@ using namespace std;
 class Solution {
 public:
     int longestIdealString(string s, int k) {
-        
+        vector<int> dp(26, 0);
+        for (auto& c : s) {
+            vector<int> cur(26, 0);
+            for (int i = 0; i < 26; ++i) {
+                cur[i] = max_element(
+                    dp.begin() + max(0, i - k),
+                    dp.begin() + min(25, i + k)
+                );
+            }
+        }
     }
 };
 // @lc code=end
