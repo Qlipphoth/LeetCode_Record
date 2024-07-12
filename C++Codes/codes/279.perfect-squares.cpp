@@ -27,18 +27,24 @@ using namespace std;
 // @lc code=start
 class Solution {
 public:
-    int step = 0;
+    unordered_map<int, int> dp;
 
-    void dfs(int n) {
-        
+    int getBound(int n) {
+        int ans = 0;
+        while (++ans * ans < n) {}
+        return ans * ans == n ? ans : ans - 1; 
+    }
+
+    int dfs(int n, int step) {
+        if (n == 0) return step;
+        int right = getBound(n);
+        for (int i = right; i > 0; --i) {
+            dfs(n - i * i, step + 1);
+        }
     }
 
     int numSquares(int n) {
-        auto getBound = [](int n) {
-            int i = 0;
-            while (std::pow(++i, 2) < n)
-            return i - 1;
-        }
+        dfs(n, 0);
 
     }
 };
