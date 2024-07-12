@@ -27,25 +27,18 @@ using namespace std;
 // @lc code=start
 class Solution {
 public:
-    unordered_map<int, int> dp;
-
-    int getBound(int n) {
-        int ans = 0;
-        while (++ans * ans < n) {}
-        return ans * ans == n ? ans : ans - 1; 
-    }
-
-    int dfs(int n, int step) {
-        if (n == 0) return step;
-        int right = getBound(n);
-        for (int i = right; i > 0; --i) {
-            dfs(n - i * i, step + 1);
+    int numSquares(int n) {        
+        vector<int> dp(n + 1, INT_MAX);
+        dp[0] = 0;
+        dp[1] = 1;
+        for (int i = 2; i < n + 1; ++i) {
+            for (int j = 1; j < i; ++j) {
+                int cur = j * j;
+                if (cur > i) break;
+                dp[i] = min(dp[i], dp[i - cur] + 1);
+            }
         }
-    }
-
-    int numSquares(int n) {
-        dfs(n, 0);
-
+        return dp.back();
     }
 };
 // @lc code=end
