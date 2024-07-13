@@ -29,12 +29,25 @@ using namespace std;
 class Solution {
 public:
     int longestIdealString(string s, int k) {
+        // dp 中存的是遍历到目前为止以不同字母为结尾的最长理想子序列长度
+        // 由于子序列可以由删除原字符串的字母的方式得到，因此 dp 的结果一定随遍历而增加
+        // dp[s[i]] = max(dp[s[i] - k], ..., dp[s[i] + k]) + 1 转移而来。
+        // vector<int> dp(26, 0);
+        // for (auto& c : s) {
+        //     c -= 'a';
+        //     dp[c] = *max_element(
+        //         dp.begin() + max(0, c - k), 
+        //         dp.begin() + min(26, c + k + 1)
+        //     ) + 1;
+        // }
+        // return *max_element(dp.begin(), dp.end());
+
         vector<int> dp(26, 0);
-        for (auto& c : s) {
-            c -= 'a';
-            dp[c] = *max_element(
-                dp.begin() + max(0, c - k), 
-                dp.begin() + min(26, c + k + 1)
+        for (auto& ch : s) {
+            ch -= 'a';
+            dp[ch] = *max_element(
+                dp.begin() + max(0, ch - k),
+                dp.begin() + min(26, ch + k + 1)
             ) + 1;
         }
         return *max_element(dp.begin(), dp.end());
