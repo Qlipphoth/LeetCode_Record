@@ -29,20 +29,20 @@ class Solution {
 public:
     vector<vector<int>> threeSum(vector<int>& nums) {
         sort(nums.begin(), nums.end());
-        vector<vector<int>> res;
+        vector<vector<int>> ans;
         int length = nums.size();
-        for (int i = 0; i < length - 2; ++i) {
+        for (int i = 0; i < length; ++i) {
             if (i > 0 && nums[i] == nums[i - 1]) continue;
             int k = length - 1;
-            for (int j = i + 1; j < length - 1; ++j) {
+            for (int j = i + 1; j < length; ++j) {
                 if (j == k) break;
                 if (j > i + 1 && nums[j] == nums[j - 1]) continue;
                 int target = -(nums[i] + nums[j]);
                 while (k > j + 1 && nums[k] > target) --k;
-                if (nums[k] == target) res.push_back({nums[i], nums[j], nums[k]});
+                if (nums[k] == target) ans.push_back({nums[i], nums[j], nums[k]});
             }
         }
-        return res;
+        return ans;
     }
 };
 // @lc code=end
