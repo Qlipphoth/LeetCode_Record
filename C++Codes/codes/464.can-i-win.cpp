@@ -27,13 +27,29 @@ using namespace std;
 // @lc code=start
 class Solution {
 public:
-    unordered_map<pair<bool, int>, bool> memo;
+    unordered_map<int, bool> memo;
 
-    bool dfs()
-
+    bool dfs(int numState, int maxChoosableInteger, int desiredTotal, int curTotal) {
+        if (memo.count(numState)) return memo[numState];
+        bool res = false;
+        for (int i = 0; i < maxChoosableInteger; ++i) {
+            if (!((numState >> i) & 1)) {
+                if (curTotal + i + 1 >= desiredTotal) {
+                    res = true;
+                    break;
+                } else if (!dfs(numState | (1 << i), maxChoosableInteger, desiredTotal, curTotal + i + 1)) {
+                    res = true;
+                    break;
+                }
+            }
+        }
+        memo[numState] = res;
+        return res;
+    }
 
     bool canIWin(int maxChoosableInteger, int desiredTotal) {
-
+        if (((maxChoosableInteger + 1) * maxChoosableInteger) / 2 < desiredTotal) return false;
+        return dfs(0, maxChoosableInteger, desiredTotal, 0);
     }
 };
 // @lc code=end
