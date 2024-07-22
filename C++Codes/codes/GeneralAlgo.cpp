@@ -2,6 +2,22 @@
 
 namespace GeneralAlgo {
 
+// =========================== Bubble Sort =========================== //
+
+void bubbleSort(vector<int>& nums)
+{
+    int n = nums.size();
+    for (int i = 0; i < n - 1; ++i)
+    {
+        for (int j = 0; j < n - i - 1; ++j)
+        {
+            if (nums[j] > nums[j + 1])
+                swap(nums[j], nums[j + 1]);
+        }
+    }
+}
+
+
 //============================ Quick Sort =============================//
 
 int partition(vector<int>& nums, int left, int right)
@@ -23,6 +39,38 @@ void quickSort(vector<int>& nums, int left, int right)
     int pivot = partition(nums, left, right);
     quickSort(nums, left, pivot - 1);
     quickSort(nums, pivot + 1, right);
+}
+
+
+// =========================== Heap Sort =========================== //
+
+void heapify(vector<int>& nums, int n, int i)
+{
+    int largest = i;
+    int l = 2 * i + 1, r = 2 * i + 2;
+    if (l < n && nums[l] > nums[largest]) largest = l;
+    if (r < n && nums[r] > nums[largest]) largest = r;
+    // If largest is not root
+    if (largest != i)
+    {
+        swap(nums[i], nums[largest]);
+        // Recursively heapify the affected sub-tree
+        heapify(nums, n, largest);
+    }
+}
+
+void heapSort(vector<int>& nums)
+{
+    int n = nums.size();
+    // Build heap (rearrange array)
+    for (int i = n / 2 - 1; i >= 0; --i)
+        heapify(nums, n, i);
+    // One by one extract an element from heap
+    for (int i = n - 1; i > 0; --i)
+    {
+        swap(nums[0], nums[i]);
+        heapify(nums, i, 0);
+    }
 }
 
 

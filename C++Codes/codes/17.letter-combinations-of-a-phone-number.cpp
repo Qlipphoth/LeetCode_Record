@@ -33,14 +33,25 @@ public:
     vector<string> ans;
 
     void dfs(int idx, string& digits) {
-        if (idx == length) ans.push_back({cur.begin(), cur.end()});
-        
+        if (idx == length) {
+            ans.push_back(string(cur.begin(), cur.end()));
+            return;
+        }
+
+        for (char c : num2Alpha[digits[idx] - '2']) {
+            cur.push_back(c);
+            dfs(idx + 1, digits);
+            cur.pop_back();
+        }
     }
 
     vector<string> letterCombinations(string digits) {
+        if (digits.empty()) return {};
         length = digits.size();
-        cur = vector<char>(length);
-
+        // // 这样会将 cur 的大小初始化为长度 length，元素均为 '\0' 的 vector，行为不符合预期。
+        // cur = vector<char>(length);  
+        dfs(0, digits);
+        return ans;
     }
 };
 // @lc code=end
