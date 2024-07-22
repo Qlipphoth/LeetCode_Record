@@ -28,34 +28,27 @@ using namespace std;
 class Solution {
 public:
     string multiply(string num1, string num2) {
-        int len1 = num1.size(), len2 = num2.size();
-        vector<char> ans;
-        int p1 = len1 - 1, p2 = len2 - 1, carry = 0, cur = 0;
-        while (p1 >= 0 && p2 >= 0) {
-            cur = (num1[p1] - '0') * (num2[p2] - '0') + carry;
-            carry = cur / 10;
-            ans.emplace_back(cur % 10 + '0');
-            --p1;
-            --p2;
+        int m = num1.size(), n = num2.size();
+        vector<int> res(m + n);
+        for (int i = m - 1; i > -1; --i) {
+            int x = num1[i] - '0';
+            for (int j = n - 1; j > -1; --j) {
+                // 位于同一位的计算数字
+                res[i + j + 1] += x * (num2[j] - '0');
+            }
         }
 
-        while (p1 >= 0) {
-            cur = num1[p1] - '0' + carry;
-            carry = cur / 10;
-            ans.emplace_back(cur % 10 + '0');
-            --p1;
+        // 注意这里只遍历到次高位，最高位只会由进位产生
+        for (int i = m + n - 1; i > 0; --i) {
+            res[i - 1] += res[i] / 10;  // 进位
+            res[i] %= 10;  // 余数
         }
 
-        while (p2 >= 0) {
-            cur = num2[p2] - '0' + carry;
-            carry = cur / 10;
-            ans.emplace_back(cur % 10 + '0');
-            --p2;
-        }
-        
-        if (carry) ans.emplace_back(carry + '0');
-
-        return string(ans.rbegin(), ans.rend());
+        string ans;
+        int i = 0;
+        while (i < m + n && res[i] == 0) ++i;
+        for (; i < m + n; ++i) ans.push_back(res[i] + '0');
+        return ans.empty() ? "0" : ans;
     }
 };
 // @lc code=end
