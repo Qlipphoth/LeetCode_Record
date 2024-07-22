@@ -28,19 +28,23 @@ using namespace std;
 class Solution {
 public:
     int largestRectangleArea(vector<int>& heights) {
-        // 反向接雨水，左右扫描一遍第一个低于当前高度的下标
-        int ans = 0, length = heights.size();
-        vector<int> left(length, 0), right(length, 0), stk;
-
-        for (int i = 0; i < length; ++i) {
-            if (!stk.empty()) {
-                if (heights[i] < stk.back()) {  
-                    
-                }
+        int n = heights.size();
+        vector<int> left(n), right(n, n);
+        stack<int> stk;
+        for (int i = 0; i < n; ++i) {
+            while (!stk.empty() && heights[stk.top()] >= heights[i]) {
+                right[stk.top()] = i;
+                stk.pop();
             }
+            left[i] = stk.empty() ? -1 : stk.top();
+            stk.push(i);
         }
 
-
+        int ans = 0;
+        for (int i = 0; i < n; ++i) {
+            ans = max(ans, (right[i] - left[i] - 1) * heights[i]);
+        }
+        return ans;
     }
 };
 // @lc code=end

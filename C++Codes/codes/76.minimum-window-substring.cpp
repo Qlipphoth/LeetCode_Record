@@ -28,41 +28,12 @@ using namespace std;
 class Solution {
 public:
     string minWindow(string s, string t) {
-        // int len1 = s.size(), len2 = t.size();
-        // if (len1 < len2) return "";
-        // unordered_map<char, int> cnt1, cnt2;
-        
-        // auto judge = [&]() {
-        //     for (auto& p : cnt1) {
-        //         if (cnt2[p.first] < p.second) return false;
-        //     }
-        //     return true;
-        // };
-
-        // for (auto& ch : t) ++cnt1[ch];
-
-        // int left = 0, minLength = INT_MAX;
-        // int ansl = 0;
-        // for (int i = 0; i < len1; ++i) {
-        //     ++cnt2[s[i]];
-        //     while (judge() && left <= i) {
-        //         // 判断条件放在 while 内部就不用考虑这么多情况了
-        //         if (i - left + 1 < minLength) {
-        //             ansl = left;
-        //             minLength = i - left + 1;
-        //         }
-        //         --cnt2[s[left]];
-        //         ++left;
-        //     }
-        // }
-        // return minLength != INT_MAX ? s.substr(ansl, minLength) : "";
-
-        int len1 = s.size(), len2 = t.size();
-        if (len1 < len2) return "";
+        int m = s.size(), n = t.size();
+        if (m < n) return "";
         unordered_map<char, int> cnt1, cnt2;
 
         auto judge = [&]() {
-            for (auto& p : cnt2) {
+            for (auto p : cnt2) {
                 if (cnt1[p.first] < p.second) return false;
             }
             return true;
@@ -70,22 +41,19 @@ public:
 
         for (auto& ch : t) ++cnt2[ch];
 
-        int curLeft = 0, ansLeft = 0, minLength = INT_MAX;
-        // 枚举右边界
-        for (int i = 0; i < len1; ++i) {
+        int left = 0, ans = INT_MAX, ansLeft;
+        for (int i = 0; i < m; ++i) {
             ++cnt1[s[i]];
-            if (judge()) {
-                while (judge() && curLeft <= i) {
-                    if (i - curLeft < minLength) {
-                        ansLeft = curLeft;
-                        minLength = i - curLeft + 1;
-                    }
-                    --cnt1[s[curLeft++]];
+            while (judge()) {
+                if (i - left + 1 < ans) {
+                    ans = i - left + 1;
+                    ansLeft = left;
                 }
+                --cnt1[s[left++]];
             }
-        }
+        }   
 
-        return minLength != INT_MAX ? s.substr(ansLeft, minLength) : "";
+        return ans != INT_MAX ? s.substr(ansLeft, ans) : "";
     }
 };
 // @lc code=end

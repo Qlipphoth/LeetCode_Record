@@ -27,32 +27,25 @@ using namespace std;
 // @lc code=start
 class Solution {
 public:
-    // bool find132pattern(vector<int>& nums) {
-    //     vector<int> stk;
-    //     bool flag = false;
-    //     int minnum = nums[0];
-    //     for (int n : nums) {
-    //         if (!stk.empty()) {
-    //             if (!flag) {
-    //                 minnum = min(minnum, n);
-    //                 if (n > stk.back()) {
-    //                     stk.clear();
-    //                     flag = true;
-    //                 }
-    //             } else {
-    //                 if (n < stk.back()) {
-    //                     if (n > minnum) return true;
-    //                     continue;
-    //                 }
-    //             }
-    //         }
-    //         stk.emplace_back(n);
-    //     }
-    //     return false;
-    // }
-
     bool find132pattern(vector<int>& nums) {
-        
+        int n = nums.size();
+        stack<int> stk;
+        vector<int> minNum(n);
+        minNum[0] = nums[0];
+        for (int i = 1; i < n; ++i) {
+            minNum[i] = min(minNum[i - 1], nums[i]);
+        }
+
+        for (int i = n - 1; i >= 0; --i) {
+            if (nums[i] > minNum[i]) {
+                while (!stk.empty() && stk.top() <= minNum[i]) {
+                    stk.pop();
+                }
+                if (!stk.empty() && stk.top() < nums[i]) return true;
+                stk.push(nums[i]);
+            }
+        }
+        return false;
     }
 
 };
