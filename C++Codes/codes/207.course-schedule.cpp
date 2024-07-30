@@ -25,42 +25,60 @@ using namespace std;
 #include <vector>
 // @lcpr-template-end
 // @lc code=start
-class UFS {
-public:
-    vector<int> fa, rank;
-
-    UFS(int n): fa(n), rank(n, 1) {
-        for (int i = 0; i < n; ++i) fa[i] = i;
-    }
-
-    int find(int x) {
-        if (fa[x] == x) return x;
-        fa[x] = find(fa[x]);
-        return fa[x];
-    }
-
-    bool merge(int x, int y) {
-        // 存在环
-        int fx = find(x), fy = find(y);
-        if (fx == fy) return false;
-        if (rank[fx] > rank[fy]) swap(fx, fy);
-        fa[fx] = fy;
-        if (rank[fx] == rank[fy]) ++rank[fx];
-        return true;
-    }
-
-};
-
 class Solution {
 public:
+    bool dfs(vector<vector<int>>& g, vector<int>& vis, int idx) {
+        vis[idx] = 1;
+        bool ans = true;
+        for (auto& nxt : g[idx]) {
+            if (vis[nxt] == 1) return false;
+            else if (vis[nxt] == 0) ans &= dfs(g, vis, nxt);
+        }
+        vis[idx] = 2;
+        return ans;
+    }
+
     bool canFinish(int numCourses, vector<vector<int>>& prerequisites) {
-        UFS ufs(numCourses);
+        // vector<vector<int>> g(numCourses);
+        // vector<int> vis(numCourses);
+
+        // for (auto& pre : prerequisites) {
+        //     // g[pre[1]].emplace_back(pre[0]);
+        //     g[pre[0]].emplace_back(pre[1]);
+        // }
+
+        // for (int i = 0; i < numCourses; ++i) {
+        //     if (vis[i] == 0) {
+        //         if (!dfs(g, vis, i)) return false;
+        //     }
+        // }
+
+        // return true;
+
+        vector<int> d(numCourses), stk, res;
+        vector<vector<int>> g(numCourses);
 
         for (auto& pre : prerequisites) {
-            if (!ufs.merge(pre[0], pre[1])) return false;
+            g[pre[1]].emplace_back(pre[0]);
+            ++d[pre[0]];
         }
 
-        return true;
+        for (int i = 0; i < numCourses; ++i) {
+            if (d[i] == 0) stk.emplace_back(i);
+        }
+
+        while (!stk.empty()) {
+            auto cur = stk.back();
+            res.emplace_back(cur);
+            stk.pop_back();
+
+            for (int nxt : g[cur]) {
+                --d[nxt];
+                if (d[nxt] == 0) stk.emplace_back(nxt);
+            }
+        }
+
+        return res.size() == numCourses;
     }
 };
 // @lc code=end
