@@ -28,31 +28,33 @@ using namespace std;
 class Solution {
 public:
     string decodeString(string s) {
-        stack<int> numStack;
-        stack<string> strStack;
-        string res;
+        vector<int> numStk;
+        vector<string> strStk;
         int num = 0;
-        for (char c : s) {
-            if (isdigit(c)) {
-                num = num * 10 + c - '0';
-            } else if (isalpha(c)) {
-                res.push_back(c);
-            } else if (c == '[') {
-                numStack.push(num);
-                strStack.push(res);
+        string res;
+
+        for (auto& ch : s) {
+            if (isdigit(ch)) {
+                num = num * 10 + ch - '0';
+            } else if (ch == '[') {
+                numStk.emplace_back(num);
+                strStk.emplace_back(res);
                 num = 0;
                 res.clear();
+            } else if (isalpha(ch)) {
+                res.push_back(ch);
             } else {
-                int times = numStack.top();
-                numStack.pop();
-                string tmp = res;
-                for (int i = 1; i < times; i++) {
-                    res += tmp;
+                int times = numStk.back();
+                numStk.pop_back();
+                string cur = res;
+                for (int i = 0; i < times - 1; ++i) {
+                    res += cur;
                 }
-                res = strStack.top() + res;
-                strStack.pop();
+                res = strStk.back() + res;
+                strStk.pop_back();
             }
         }
+
         return res;
     }
 };
