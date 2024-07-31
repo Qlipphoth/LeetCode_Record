@@ -28,23 +28,38 @@ using namespace std;
 class Solution {
 public:
     int lengthOfLIS(vector<int>& nums) {
-        int len = nums.size(), maxn = 1;
-        vector<int> dp(len, 1);
-        for (int i = 1; i < len; ++i) {
-            for (int j = i - 1; j > -1; --j) {
-                if (nums[j] < nums[i]) {
-                    dp[i] = max(dp[i], dp[j] + 1);
-                    maxn = max(maxn, dp[i]);
+        // dp 解法，O(n ^ 2);
+        // int n = nums.size(), ans = 1;
+        // vector<int> dp(n, 1);
+        // for (int i = 0; i < n; ++i) {
+        //     for (int j = i - 1; j > -1; --j) {
+        //         if (nums[j] < nums[i]) dp[i] = max(dp[i], dp[j] + 1);
+        //         ans = max(ans, dp[i]);
+        //     }
+        // }
+
+        // return ans;
+
+        int n = nums.size();
+        vector<int> ans{nums[0]};
+
+        for (int i = 1; i < n; ++i) {
+            int cur = nums[i];
+            if (cur > ans.back()) {
+                ans.emplace_back(cur);
+            } else {
+                // *lower_bound(ans.begin(), ans.end(), cur) = cur;
+                int left = 0, right = ans.size() - 1;
+                while (left < right) {
+                    int mid = left + ((right - left) >> 1);
+                    if (ans[mid] < cur) left = mid + 1;
+                    else right = mid;
                 }
+                ans[left] = cur;
             }
         }
 
-        // for (auto n : dp) {
-        //     cout << n << " ";
-        // }
-        // cout << endl;
-
-        return maxn;
+        return ans.size();
     }
 };
 // @lc code=end
