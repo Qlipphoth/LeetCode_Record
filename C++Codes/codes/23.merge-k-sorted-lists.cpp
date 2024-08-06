@@ -38,7 +38,7 @@ using namespace std;
 class Solution {
 public:
     ListNode* mergeKLists(vector<ListNode*>& lists) {
-
+        
     }
 };
 // @lc code=end
