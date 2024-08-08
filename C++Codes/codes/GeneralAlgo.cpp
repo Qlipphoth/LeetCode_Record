@@ -59,6 +59,16 @@ void quickSort3Ways(vector<int>& nums, int left, int right)
     quickSort3Ways(nums, gt + 1, right);
 }
 
+// 快速选择
+int quickSelect(vector<int>& nums, int left, int right, int k)
+{
+    if (left >= right) return nums[left];
+    int pivot = partition(nums, left, right);
+    if (pivot == k) return nums[pivot];
+    else if (pivot < k) return quickSelect(nums, pivot + 1, right, k);
+    else return quickSelect(nums, left, pivot - 1, k);
+}
+
 // =========================== Heap Sort =========================== //
 
 void heapify(vector<int>& nums, int n, int i)
